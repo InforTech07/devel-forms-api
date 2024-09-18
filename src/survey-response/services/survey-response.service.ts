@@ -68,5 +68,52 @@ export class SurveyResponseService {
       relations: ['surveyQuestion', 'selectedOption'],
     });
   }
+
+
+  async createSurveyResponses(createSurveyResponsesDto: CreateSurveyResponseDto[]): Promise<SurveyResponse[]> {
+    const responses = [];
+
+    for (const dto of createSurveyResponsesDto) {
+      const surveyQuestion = await this.surveyQuestionRepository.findOne({
+        where: { id: dto.surveyQuestionId }
+      });
+      if (!surveyQuestion) {
+        throw new Error(`Survey question with ID ${dto.surveyQuestionId} not found`);
+      }
+
+      let selectedOption = null;
+      if (dto.selectedOptionId !== undefined && dto.selectedOptionId !== null) {
+        selectedOption = await this.optionQuestionRepository.findOne({
+            where: { id: dto.selectedOptionId }
+        });
+        if (!selectedOption) {
+          throw new Error(`Option with ID ${dto.selectedOptionId} not found`);
+        }
+      }
+
+      const response = this.surveyResponseRepository.create({
+        surveyQuestion,
+        selectedOption,
+        textAnswer: dto.textAnswer,
+        dateAnswer: dto.dateAnswer ? new Date(dto.dateAnswer) : null,
+        numberAnswer: dto.numberAnswer,
+        createdAt: new Date(), // o usa la fecha actual si corresponde
+        isActive: true,
+      });
+
+      responses.push(response);
+    }
+
+    return await this.surveyResponseRepository.save(responses);
+  }
+
+  async getPaginatedResponses(surveyQuestionId:number, page: number, limit: number): Promise<SurveyResponse[]> {
+    return await this.surveyResponseRepository.find({
+      where: { surveyQuestion: { id: surveyQuestionId } },
+      relations: ['selectedOption'],
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+  }
 }
 

@@ -20,8 +20,13 @@ export class UsersService {
     const newUser = this.userRepository.create({
       ...data,
       password: hashedPassword,
+      role: 'user',
     });
-    return this.userRepository.save(newUser);
+    const res = await this.userRepository.save(newUser);
+    if(!res){
+      throw new Error('Error creating user')
+    }
+    return res;
   }
   
   async getUserById(id: number): Promise<User> {
@@ -30,19 +35,6 @@ export class UsersService {
       relations: ['createdSurveys', 'updatedSurveys'], // Incluir encuestas relacionadas
     });
   }
-
-  // // getAll users
-  // async getAllUsers(): Promise<User[]> {
-  //   return this.userRepository.find();
-  // }
-
-  // async validateUser(email: string, password: string): Promise<User | null> {
-  //   const user = await this.userRepository.findOneBy({ email });
-  //   if (user && await bcrypt.compare(password, user.password)) {
-  //     return user;
-  //   }
-  //   return null;
-  // }
 
   async findOneByEmail(email: string): Promise<User> {
     return this.userRepository.findOne({ where: { email } });

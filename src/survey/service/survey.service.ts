@@ -52,14 +52,11 @@ export class SurveyService {
   }
 
   // // Obtener todas las encuestas y sus preguntas
-  async getAllSurveys(): Promise<Survey[]> {
+  async getAllSurveys(idUser: number): Promise<Survey[]> {
     return this.surveyRepository.find({ 
-      where: { isActive: true }, 
+      where: { isActive: true, createdBy: {id: idUser } }, 
       relations: [
-        'questions', 
-        'questions.options', 
-        'questions.responses',
-        'questions.responses.selectedOption'
+        'questions'
       ] 
       });
   }
@@ -85,5 +82,14 @@ export class SurveyService {
 
   private generateToken() {
     return uuidv4();
+  }
+
+  //get survey by token
+  async getSurveyByToken(token: string): Promise<Survey> {
+    const survey = await this.surveyRepository.findOne({ where: { token }, relations: ['questions', 'questions.options'] });
+    if (!survey) {
+      throw new NotFoundException('Survey not found');
+    }
+    return survey;
   }
 }

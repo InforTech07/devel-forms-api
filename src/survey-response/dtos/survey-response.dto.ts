@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsOptional, IsString, IsNumber, IsDateString, IsInt } from 'class-validator';
+import { IsOptional, IsInt, IsString, IsDateString, IsNumber } from 'class-validator';
 
 export class CreateSurveyResponseDto {
   @IsInt()
@@ -14,6 +14,7 @@ export class CreateSurveyResponseDto {
   textAnswer?: string; // Respuesta de texto
 
   @IsOptional()
+  @IsString()
   @IsDateString()
   dateAnswer?: string; // Respuesta de fecha
 
@@ -24,3 +25,7 @@ export class CreateSurveyResponseDto {
 
 
 export class UpdateSurveyResponseDto extends PartialType(CreateSurveyResponseDto){}
+
+export class CreateSurveyResponsesDto {
+    responses: CreateSurveyResponseDto[];
+}

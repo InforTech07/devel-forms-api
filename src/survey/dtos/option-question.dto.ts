@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator';
+import { IsString, IsBoolean, IsNumber } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 
 export class CreateOptionQuestionDto {
@@ -7,18 +7,6 @@ export class CreateOptionQuestionDto {
 
     @IsBoolean()
     isCorrect: boolean;
-
-    @IsOptional()
-    @IsBoolean()
-    disabledText: boolean;
-
-    @IsOptional()
-    @IsBoolean()
-    disabledDate: boolean;
-
-    @IsOptional()
-    @IsBoolean()
-    disabledNumber: boolean;
 
     @IsBoolean()
     isOnlyOption: boolean;

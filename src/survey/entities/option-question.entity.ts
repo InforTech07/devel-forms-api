@@ -21,18 +21,6 @@ export class OptionQuestion {
     @Column()
     isCorrect: boolean;
 
-    @Column()
-    disabledText: boolean;
-
-    @Column()
-    disabledDate: boolean;
-
-    @Column()
-    disabledNumber: boolean;
-
-    @Column()
-    isOnlyOption: boolean;
-
     @ManyToOne(() => SurveyQuestion, surveyQuestion => surveyQuestion.options)
     surveyQuestion: SurveyQuestion;
 

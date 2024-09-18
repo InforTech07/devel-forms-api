@@ -23,9 +23,12 @@ export class AuthService {
     if (!res) {
       return { message: 'Invalid credentials' };
     }
-    const payload = { email: user.email ,sub: user.id };
+    const payload = { email: user.email ,id: res.id };
     return {
       access_token: this.jwtService.sign(payload),
+      email: res.email,
+      id: res.id,
+      rol: res.role,
     };
   }
 }

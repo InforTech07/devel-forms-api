@@ -12,12 +12,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Length(6)
   readonly password: string;
-
-  @IsNotEmpty()
-  readonly role: string;
-
-  // createdSurveys: SurveySummaryDto[];
-  // updatedSurveys: SurveySummaryDto[];
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}
