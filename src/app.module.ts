@@ -12,6 +12,7 @@ import { SurveyQuestion } from './survey/entities/survey-question.entity';
 import { OptionQuestion } from './survey/entities/option-question.entity';
 import { SurveyResponseModule } from './survey-response/survey-response.module';
 import { SurveyResponse } from './survey-response/entities/survey-response.entity';
+import { SelectedOption } from './survey-response/entities/selected-option';
 
 @Module({
   imports: [
@@ -22,12 +23,12 @@ import { SurveyResponse } from './survey-response/entities/survey-response.entit
     }),
     TypeOrmModule.forRoot({
       type: 'mssql',
-      host: 'localhost',
-      port: 1433,
-      username: 'sa', // Cambia estos valores según tu configuración
-      password: 'yourStrong#Password',
-      database: 'develformsdb',
-      entities: [User, Survey, SurveyQuestion, OptionQuestion, SurveyResponse], // Entidades globales
+      host: config().database.host,
+      port: Number(config().database.port),
+      username: config().database.user, // Cambia estos valores según tu configuración
+      password: config().database.password,
+      database: config().database.name,
+      entities: [User, Survey, SurveyQuestion, OptionQuestion, SurveyResponse, SelectedOption], // Entidades globales
       synchronize: true, // ¡No uses esto en producción!
       options: {
         encrypt: false,

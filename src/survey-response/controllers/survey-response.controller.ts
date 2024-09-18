@@ -14,14 +14,14 @@ export class SurveyResponseController {
         return this.surveyResponseService.createSurveyResponses(createSurveyResponsesDto);
     }
 
-  // Crear una nueva respuesta para una pregunta
-  @Post(':surveyQuestionId')
-  async createResponse(
-    @Param('surveyQuestionId') surveyQuestionId: number,
-    @Body() createSurveyResponseDto: CreateSurveyResponseDto
-  ): Promise<SurveyResponse> {
-    return await this.surveyResponseService.createResponse(surveyQuestionId, createSurveyResponseDto);
-  }
+  // // Crear una nueva respuesta para una pregunta
+  // @Post(':surveyQuestionId')
+  // async createResponse(
+  //   @Param('surveyQuestionId') surveyQuestionId: number,
+  //   @Body() createSurveyResponseDto: CreateSurveyResponseDto
+  // ): Promise<SurveyResponse> {
+  //   return await this.surveyResponseService.createResponse(surveyQuestionId, createSurveyResponseDto);
+  // }
 
 
   // Obtener todas las respuestas para una pregunta específica
@@ -29,7 +29,7 @@ export class SurveyResponseController {
   async getResponses(
     @Param('surveyQuestionId') surveyQuestionId: number,
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 2
+    @Query('limit') limit: number = 10
     ): Promise<any> {
     //return await this.surveyResponseService.getResponsesForQuestion(surveyQuestionId);
     return await this.surveyResponseService.getPaginatedResponses(surveyQuestionId, page, limit);

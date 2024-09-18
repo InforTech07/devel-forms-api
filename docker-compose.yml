@@ -1,24 +1,25 @@
-version: '3.7'
+version: '3.8'
 
 services:
-  mssql:
+  db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
     environment:
-      - MSSQL_SA_PASSWORD=yourStrong#Password
+      - SA_PASSWORD=yourStrong!Password
       - ACCEPT_EULA=Y
     ports:
       - "1433:1433"
     volumes:
-      - mssql-data:/var/opt/mssql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - app-network
-    restart: always
+      - sql_data:/var/opt/mssql
+
+  init-db:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: sqlcmd
+    depends_on:
+      - db
+    entrypoint: ["/bin/sh", "-c", "sleep 30 && /opt/mssql-tools/bin/sqlcmd -S db -U sa -P yourStrong!Password -i /scripts/init-db.sql"]
+    volumes:
+      - ./init:/scripts
 
 volumes:
-  mssql-data:
-
-networks:
-  app-network:
-    driver: bridge
+  sql_data:

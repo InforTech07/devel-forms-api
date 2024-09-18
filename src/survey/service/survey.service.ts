@@ -63,7 +63,14 @@ export class SurveyService {
 
   // // Obtener encuesta por ID
   async getSurveyById(id: number): Promise<Survey> {
-    const res = await this.surveyRepository.findOne({ where: { id }, relations: ['questions', 'questions.options'] });
+    const res = await this.surveyRepository.findOne({ 
+      where: { id }, 
+      relations: [
+        'questions', 
+        'questions.options',
+        'questions.options.selectedOptions'
+      
+      ] });
 
     if(!res || !res.isActive) {
       throw new Error('Survey not found');
@@ -86,7 +93,14 @@ export class SurveyService {
 
   //get survey by token
   async getSurveyByToken(token: string): Promise<Survey> {
-    const survey = await this.surveyRepository.findOne({ where: { token }, relations: ['questions', 'questions.options'] });
+    const survey = await this.surveyRepository.findOne({ 
+      where: { token }, 
+      relations: [
+        'questions', 
+        'questions.options',
+        'createdBy'
+      ] 
+    });
     if (!survey) {
       throw new NotFoundException('Survey not found');
     }

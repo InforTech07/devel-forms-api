@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, OneToMany } from 'typeorm';
 import { SurveyQuestion } from '../../survey/entities/survey-question.entity';
-import { OptionQuestion } from '../../survey/entities/option-question.entity';
+//import { OptionQuestion } from '../../survey/entities/option-question.entity';
+import { SelectedOption } from './selected-option';
 
 @Entity('survey_responses') // Nombre de la tabla en la base de datos
 export class SurveyResponse {
@@ -10,8 +11,8 @@ export class SurveyResponse {
   @ManyToOne(() => SurveyQuestion, surveyQuestion => surveyQuestion.responses)
   surveyQuestion: SurveyQuestion;
 
-  @ManyToOne(() => OptionQuestion, { nullable: true })
-  selectedOption: OptionQuestion; // Respuesta seleccionada si es opción múltiple
+  @OneToMany(() => SelectedOption, selectedOption => selectedOption.surveyResponse, { cascade: true })
+  selectedOptions: SelectedOption[];
   
   @Column({ nullable: true })
   textAnswer: string; // Respuesta de texto si es tipo "texto"

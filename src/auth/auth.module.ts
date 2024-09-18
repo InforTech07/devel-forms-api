@@ -6,12 +6,13 @@ import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './controllers/auth.controller';
 import { UsersModule } from 'src/users/users.module';
 
+
 @Module({
     imports: [
         UsersModule,
         PassportModule,
         JwtModule.register({
-            secret: '!#secretKey',
+            secret: '!secret',
             signOptions: { expiresIn: '1d' },
         })
     ],

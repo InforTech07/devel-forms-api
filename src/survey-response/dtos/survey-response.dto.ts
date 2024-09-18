@@ -1,26 +1,28 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsOptional, IsInt, IsString, IsDateString, IsNumber } from 'class-validator';
+import { IsOptional, IsString, IsArray, IsNumber } from 'class-validator';
 
 export class CreateSurveyResponseDto {
-  @IsInt()
+  @IsNumber()
   surveyQuestionId: number;
 
   @IsOptional()
-  @IsInt()
-  selectedOptionId?: number; // Opción seleccionada (si es de opción múltiple)
+  @IsString()
+  textAnswer?: string;
 
   @IsOptional()
   @IsString()
-  textAnswer?: string; // Respuesta de texto
-
-  @IsOptional()
-  @IsString()
-  @IsDateString()
-  dateAnswer?: string; // Respuesta de fecha
+  dateAnswer?: string; // O formato de fecha que estés utilizando
 
   @IsOptional()
   @IsNumber()
-  numberAnswer?: number; // Respuesta numérica
+  numberAnswer?: number;
+
+  @IsOptional()
+  @IsArray()
+  selectedOptions: {
+    optionId: number;
+    selected: boolean;
+  }[];
 }
 
 

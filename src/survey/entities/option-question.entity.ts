@@ -8,7 +8,7 @@ import {
     OneToMany
 } from "typeorm";
 import { SurveyQuestion } from "./survey-question.entity";
-import { SurveyResponse } from "src/survey-response/entities/survey-response.entity";
+import { SelectedOption } from "src/survey-response/entities/selected-option";
 
 @Entity('option')
 export class OptionQuestion {
@@ -24,8 +24,8 @@ export class OptionQuestion {
     @ManyToOne(() => SurveyQuestion, surveyQuestion => surveyQuestion.options)
     surveyQuestion: SurveyQuestion;
 
-    @OneToMany(() => SurveyResponse, surveyResponse => surveyResponse.selectedOption)
-    responses: SurveyResponse[];
+    @OneToMany(() => SelectedOption, selectedOption => selectedOption.option)
+    selectedOptions: SelectedOption[];
 
     @CreateDateColumn({ type: 'datetime' }) // Fecha de creación automática
     createdAt: Date;
